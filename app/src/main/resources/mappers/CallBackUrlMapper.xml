@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.app.dao.CallBackUrlMapper">
+    <update id="updateByOrderNo" parameterType="com.app.model.OrderTable">
+        update ordertable set state=#{state} where orderNo=#{orderNo}
+    </update>
+
+    <update id="updateSch_state" parameterType="com.app.model.OrderTable">
+        update ordertable set sch_state=#{sch_state} where orderNo=#{orderNo}
+    </update>
+
+    <select id="saveByOrderNo" resultType="com.app.model.OrderTable" parameterType="String">
+        select orgId,orderNo,userId,xiaoqu_id,room_id,paidAmount,createTime,snowId,state
+          from ordertable where orderNo=#{orderNo}
+    </select>
+</mapper>

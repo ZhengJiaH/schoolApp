@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.app.dao.OrderTableMapper">
+    <insert id="insertOrder" parameterType="com.app.model.OrderTable">
+        insert into ordertable (orderNo,userId,orgid,productId,paidAmount,xiaoqu_id,loudong_id,room_id,createTime,snowId,state,sch_state)
+          values (#{orderNo},#{userId},#{orgId},#{productId},#{paidAmount},#{xiaoqu_id},#{loudong_id},#{room_id},#{createTime},#{snowId},#{state},#{sch_state});
+    </insert>
+
+    <select id="queryState" resultType="com.app.model.OrderTable" parameterType="int">
+        select orderNo,userId,orgid,productId,paidAmount,xiaoqu_id,loudong_id,room_id,createTime,snowId,state
+          from ordertable where state=#{state} and createtime>=DATE_SUB(NOW(),INTERVAL 5 MINUTE);
+    </select>
+</mapper>

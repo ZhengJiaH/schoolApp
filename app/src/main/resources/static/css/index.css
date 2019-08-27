@@ -1,0 +1,158 @@
+﻿https://vue.ant.design/docs/vue/introduce-cn/.container {
+  max-width: 640px;
+  min-width: 320px;
+  width: 100%;
+  height: 100%;
+  background: #F2F2F2;
+  margin: 0 auto;
+}
+
+body,html {
+  height: 100%;
+  color: #000;
+}
+.page1{
+	min-height: 100vh;
+    position: relative;
+}
+
+.main-title {
+  position: relative;
+  width: 100%;
+  height: 50px;
+  background: #fff;
+  padding: 10px;
+}
+
+.main-title>img {
+  margin-right: 10px;
+}
+.main-title>span {
+  position: absolute;
+  font-size: 16px;
+  height: 16px;
+  top: 14px;
+
+}
+
+.mid-form {
+  margin-top: 20px;
+  background: #fff;
+  padding: 6px 15px;
+}
+.mid-box {
+  width: 100%;
+  height: 40px;
+  padding: 5px;
+  font-size: 14px;
+  line-height: 29px;
+  border-bottom: 1px solid #E8E8E8;
+}
+.mid-box:last-child {
+  border: none;
+  height: 30px;
+}
+
+.mid-box>select {
+  float: right;
+  margin-top: 4px;
+}
+
+#school-tit {
+  color: #000;
+}
+
+.mid-box>span {
+  float: right;
+  color: #7D7D7D;
+}
+.mid-box>input {
+  margin-top: 4px;
+  float: right;
+  text-align: right;
+  font-size: 14px;
+
+}
+.tips {
+  padding: 5px 20px;
+}
+.warning {
+  color: red;
+}
+.chong-btn {
+  position: relative;
+  width: 90%;
+  margin: 9px auto;
+  display: inherit;
+  height: 42px;
+  font-size: 18px;
+  line-height: 40px;
+  color: #fff;
+  background: #4990E2;
+  text-align: center;
+  border-width: 0;
+}
+.yunban-title {
+  bottom: 36px;
+  width: 100%;
+  height: 0px;
+  text-align: center;
+  color: #A6A6A6;
+}
+
+
+.main-status {
+ padding: 30px 60px;
+ text-align: center;
+ color: #000;
+ border-bottom: .75px solid #f2f2f2;
+ background: #fff;
+}
+.zhifubao-logo {
+  display: relative;
+  margin: 30px auto;
+  width: 60px;
+  height: 60px;
+  background: url("../images/zhifubao.png") no-repeat;
+  background-size:60px 60px;
+}
+
+.zhifubao-logo-tit {
+  margin: 0 auto;
+  margin-bottom: 10px;
+  display: inherit;
+}
+
+.pay-total {
+  font-size: 26px;
+}
+
+.chong-detail {
+  padding: 15px;
+  background: #fff;
+}
+.chong-detail-tit {
+  font-size: 15px;
+  font: 700;
+}
+.chong-detail-content {
+  color: #A6A6A6;
+}
+.foot-container {
+  position: absolute;
+  max-width: 640px;
+  min-width: 320px;
+  width: 100%;
+  bottom: 20px;
+}
+
+select {
+  /*Chrome和Firefox里面的边框是不一样的，所以复写了一下*/
+  border: none;
+  font-size: 14px;
+  color: #272424;
+  /*很关键：将默认的select选择框样式清除*/
+  appearance:none;
+  -moz-appearance:none;
+  -webkit-appearance:none;
+}

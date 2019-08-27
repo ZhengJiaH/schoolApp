@@ -1,0 +1,418 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <link rel="stylesheet" type="text/css" href="css/base.css"/>
+    <link rel="stylesheet" type="text/css" href="css/index.css?v=8"/>
+    <title>电费充值</title>
+    <style>
+        .dis{
+            display:none;
+        }
+        #foot{
+            display:none
+        }
+    </style>
+</head>
+<body>
+<div class="container page1">
+    <div class="main-title">
+        <img src="images/timg.jpg" width="30px" height="30px" alt="">
+        <span>电费充值</span>
+    </div>
+    <!-- 表单 -->
+    <div class="mid-form">
+        <form id="form1" action="" method="post">
+            <div class="mid-box">
+                <label for="">缴费单位</label>
+                <span id="school-tit">江西泰豪动漫职业学院</span>
+            </div>
+            <div class="mid-box school-area">
+                <label for="">校区</label>
+                <select class="" name="xiaoqu_id" id="xiaoquBtn">
+                    <option value="">请选择</option>
+                </select>
+            </div>
+            <div class="mid-box build-num">
+                <label for="">楼栋</label>
+                <select class="" name="loudong_id" id="loudongBtn">
+                    <option value="">请选择</option>
+                </select>
+            </div>
+            <div class="mid-box room-num">
+                <label for="">房间号</label>
+                <select class="" name="room_id" id="roomBtn">
+                    <option value="">请选择</option>
+                </select>
+            </div>
+            <div class="mid-box left-dian">
+                <label for="">剩余电量</label>
+                <span></span>
+            </div>
+            <div class="mid-box chongzhi-num">
+                <label for="">充值金额</label>
+                <input id="int" type="text" name="paidAmount" value="" placeholder="请输入金额">
+            </div>
+        </form>
+    </div>
+    <!--<div class="tips">-->
+    <!--注：电费价格：0.585/度，23:30-00:05系统结账期不能充值-->
+
+    <!--</div>-->
+    <div class="tips warning">
+        请仔细核对房间号无误后再充值，调寝前期请少量充值。
+
+    </div>
+    <!-- <div class="chong-btn">
+      充值
+    </div> -->
+    <!-- <input type="button" name="" class="chong-btn" value="充值" id="createOrder"> -->
+    <button class="chong-btn" id="createOrder">充值</button>
+    <div class="foot-container">
+        <div class="yunban-title">
+            本服务由海熊校园提供
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript">
+</script>
+<script type="text/javascript">
+    /*BKZ start*/
+    var h=$(window).height()
+    console.log(h)
+    $(".page1").css("height",h);
+
+    function getQueryVariable(variable)
+    {
+        var query = window.location.search.substring(1);
+        //var query="openId=oYm-b02lUTqepRGA6Nxx8UmQAvP8&appId=8c341975-51c9-47d1-b6e7-213ea65ac948&nonce=EfPcGN7gj1&sign=53CC8294024980329B4F3F9A79734FCF&nsukey=dnsnBQ0k0esJ8bfpp%2BLhyvxTfpPrKjTaNjNCketAOwrafpQe27yNvq0VsQaVvuyODpc%2FuGTcIVz%2BsHdlqBb1%2B7BPoSAxlgOub%2F4l3ajWVxG0hWRDGawIeCRlQuvVvgQKRCB%2B46CxrjHw%2F5C3VrL0EVlJfy1o0uBVeGsrlXXH9fiYdfH4zmRxhWceUDVb7%2BWX8t1Wgz204D3DKiWuFpKKWA%3D%3D"
+        var vars = query.split("&");
+        for (var i=0;i<vars.length;i++) {
+            var pair = vars[i].split("=");
+            if(pair[0] == variable){return pair[1];}
+        }
+        return(false);
+    }
+
+    $(document).ready(function(){
+        var r=getQueryVariable("openId")
+        console.log(r)
+        if (r!=false) {  //判断是否有参数
+            $(".page1").removeClass("dis");
+        }else{
+            $(".page1").addClass("dis");
+            var params = {};
+            params['_url'] = '/init/app';
+            request(params,false,function(data){
+                console.log(10)
+                console.log(data.authorize_url)
+                window.location.replace(data.authorize_url)
+            });
+        }
+    })
+    var str123
+    function getid(){
+        str123=getQueryVariable("openId")
+        console.log(str123)
+    }
+
+    //$("#int").focus(function(){
+    //  $("#foot").addClass("dis");
+    // });
+
+    var sign
+    $('#int').blur(function () {
+        // $("#foot").addClass("dis");
+        getid()
+        console.log(str123)
+        var money=($("#int").val())*100;
+
+        console.log(money)
+        var params = {};
+        params['_url'] = 'init/getSign?paidAmount='+money+'&aliUserId='+str123;
+        request(params,false,function(data){
+            sign=data.sign
+            console.log(sign)
+
+        })
+    });
+
+
+
+
+    $(function(){
+        getListCampus();
+        //getLatestPayment();
+    })
+    /*创建订单，返回支付链接*/
+    $("#createOrder").click(function(){
+        $(this).attr("disabled","true");
+        pay();
+    })
+    var paidAmount
+    function pay(){
+
+        //把from表单的值转换为字符串字段
+
+
+        var params = $("#form1").serializeJson();
+        paidAmount=params.paidAmount
+        console.log(paidAmount)
+
+
+        //console.log(params);
+        //return;
+
+        var re = /^[0-9]+.?[0-9]*$/;
+        if(params['xiaoqu_id']==""||params['xiaoqu_id'] == "请选择"){
+            alert("校区不能为请选择");
+            return false;
+        }
+        if(params['loudong_id']==""||params['loudong_id'] == "请选择"){
+            alert("楼层不能为请选择");
+            return false;
+        }
+        if(params['room_id']==""||params['room_id'] == "请选择"){
+            alert("房间号不能为请选择");
+            return false;
+        }
+        if(params['paidAmount']==""){
+            alert("金额不能为空");
+            return false;
+        }
+        if(!re.test(params['paidAmount'])){
+            alert("金额只能为数字！");
+            return false;
+        }
+        // if(params['paidAmount'] < 10){
+        //     alert("金额不能低于10元");
+        //     return false;
+        // }
+        getid()
+        console.log(111)
+        console.log(str123)
+
+        //往后台传递数据
+
+
+        //console.log(params);
+        params['_url'] = 'yunban/getPayUrl';
+        if (/MicroMessenger/.test(window.navigator.userAgent)) {
+            params['platFormOriginal'] = "1";
+        } else if (/AlipayClient/.test(window.navigator.userAgent)) {
+            params['platFormOriginal'] = "0";
+        }
+        params['longdong_id'] =  params['floorId']; //楼层
+        params['paidAmount'] = params['paidAmount']*100;  //单位分
+        //console.log(payAmount)
+        params['room_id'] = $("#roomBtn").children("option:selected").text();
+        //console.log(roomNumber)
+        params['xiaoqu_id'] = params['xiaoqu_id'];
+        //params['productId'] = "1118";
+        //params['callBackUrl'] = "www.baidu.com";
+        //params['orgId'] = "haixiong-ali";
+        params['aliUserId'] = str123;
+        // params['customDesc'] = "测试";
+        params['sign'] = sign;
+        params["_type"] = "POST";
+        //params["url"] = "pay/order/customPay";
+
+        console.log(params)
+        //var params =JSON.stringify(params)
+        console.log(params)
+
+
+
+        //console.log(params);
+        //return;
+        request(params,false,function(data){
+            //alert(data);
+
+            if(data.status == "200"){
+                window.location.href=data.result.payUrl;
+                console.log(data.result)
+            }else{
+                alert(data.message);
+
+            }
+        })
+    }
+
+
+    /*获取最近一次缴费记录*/
+    function getLatestPayment(){
+        var params = {};
+        params['_url'] = "wtc/pay/order/getLatestPayment";
+        request(params,false,function(data){
+            if(data.status == "200"){
+                if(data.result != null){
+                    var result = data.result;
+                    //设置上一次选中项为显示项
+                    $("#xiaoquBtn").find("option[value='"+result.campusId+"']").attr("selected",true);
+                    getListFloor(result.campusId);
+                    $("#loudongBtn").find("option[value='"+result.floorId+"']").attr("selected",true);
+                    getListRoom(result.floorId);
+                    $("#roomBtn").find("option[value='"+result.roomNumberId+"']").attr("selected",true);
+                    getLastAmp(result.roomNumberId);
+                }else{
+
+                }
+            }else{
+                alert(data.message);
+            }
+        })
+    }
+    /*获取校区*/
+
+    function getListCampus(){
+        var params = {};
+        params['_url'] = 'getschool/getxiaoqu';
+        request(params,false,function(data){
+
+            var data2 = JSON.stringify(data);
+            console.log(data[0].xiaoqu)
+            //alert('sss')
+            showListCampus(data);
+            // alert('sss')
+            // for (var i = 0; i < data.length; i++) {
+            //    $("#xiaoquBtn").append("<option value='"+data[i].xiaoqu_id+"'>"+data[i].xiaoqu+"</option>");
+            //$("#xiaoquBtn").append("<option>"+data.xiaoqu[i]+"</option>");
+            //}
+        })
+    }
+
+    function showListCampus(data){
+        console.log(JSON.stringify(data))
+        //alert('sss')
+        $.each(data, function(index, dataItem){
+            console.log(dataItem)
+            var $option = $("<option>").attr({"value":dataItem['xiaoqu_id']}).append(dataItem['xiaoqu']);
+            $(".school-area>select").append($option);
+            $("#loudongBtn option[value='1']").attr("selected","selected");
+        });
+
+    }
+    var xiaoqu_id
+    //这是获取校区id  并把它闯入楼栋请求中
+    $("#xiaoquBtn").change(function(e){
+        xiaoqu_id = $(this).children('option:selected').val();
+        console.log(xiaoqu_id)
+        $("#loudongBtn").empty();
+        var $option = $("<option>").append("请选择");
+        $("#loudongBtn").append($option);
+        getListFloor(xiaoqu_id);
+    })
+    var loudong_id
+    //这是获取楼栋id  并把它传入房间号请求中
+    $("#loudongBtn").change(function(e){
+        loudong_id = $(this).children('option:selected').val();
+        console.log(loudong_id)
+        $("#roomBtn").empty();
+        var $option = $("<option>").append("请选择");
+        $("#roomBtn").append($option);
+        getListRoom(loudong_id,xiaoqu_id);
+    })
+    var roomId
+    //这是获取房间号id  并把它传入房间号请求中
+    $("#roomBtn").change(function(e){
+        roomId = $(this).children('option:selected').val();
+        getLastAmp(roomId);
+    })
+
+    /*获取楼栋*/
+    function getListFloor(id){
+        var params = {};
+        params['_url'] = 'getschool/getloudong?xiaoqu_id='+id;
+        params['xiaoqu_id'] = id;
+        request(params,false,function(data){
+            console.log(data)
+            showListFloor(data);
+        })
+
+    }
+    //遍历展示楼层数据
+    function showListFloor(data){
+        $.each(data, function(index, dataItem){
+            var $option = $("<option>").attr({"value":dataItem.loudong_id}).append(dataItem.loudong);
+            $(".build-num>select").append($option);
+        });
+
+
+    }
+    /*获取宿舍*/
+    function getListRoom(id){
+        console.log(id)
+        var params = {};
+        params['_url'] = 'getschool/getroom?loudong_id='+id+'&xiaoqu_id='+xiaoqu_id;
+        params['loudong_id'] = id;
+        request(params,false,function(data){
+            showListRoom(data);
+        })
+
+    }
+    //遍历展示宿舍数据
+    function showListRoom(data){
+
+        $.each(data, function(index, dataItem){
+            var $option = $("<option>").attr({"value":dataItem.room_id}).append(dataItem.room);
+            $(".room-num>select").append($option);
+            //$(".room-num>select>option").eq(index+1).text(dataItem.room);
+        });
+
+
+    }
+
+
+
+    // /*获取剩余电量*/
+    function getLastAmp(id){
+        var params = {};
+        params['_url'] = 'getschool/getusedAmp?room_id='+id+'&loudong_id='+loudong_id+'&xiaoqu_id='+xiaoqu_id;
+        params['room_id'] = id;
+
+
+        request(params,false,function(data){
+            showLastAmp(data);
+        })
+
+
+    }
+    function showLastAmp(data){
+        $(".left-dian>span").text(parseInt(data[0].allAmp-data[0].usedAmp));
+    }
+
+
+
+    /*BKZ end*/
+</script>
+
+<!-- 阿里标准设置 -->
+<script>
+    function ready(callback) {
+        // 如果jsbridge已经注入则直接调用
+        // 如果jsbridge已经注入则直接调用
+        if (window.AlipayJSBridge) {
+            callback && callback();
+        } else {
+            // 如果没有注入则监听注入的事件
+            document.addEventListener('AlipayJSBridgeReady', callback, false);
+        }
+    }
+    ready(function(){
+        AlipayJSBridge.call('hideOptionMenu');
+        AlipayJSBridge.call("setTitleColor", {
+            color: parseInt('108ee9', 16),
+            reset: false // (可选,默认为false)  是否重置title颜色为默认颜色。
+        });
+    });
+
+
+
+</script>
+</body>
+</html>

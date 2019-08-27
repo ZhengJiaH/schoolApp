@@ -1,0 +1,64 @@
+/*reset css 重置样式*/
+*,
+::before,
+::after {
+	/*选中所有的元素，和伪元素*/
+	margin: 0;
+	padding: 0;
+	/*针对移动端*/
+	box-sizing: border-box;/*从边框开始算长度*/
+	-webkit-box-sizing: border-box;
+	-webkit-tap-highlight-color: transparent;/*清楚点击高亮效果*/
+}
+body {
+	font-size: 14px;
+	color: #333;
+	font-family: 'Microsoft Yahei',sans-serif;
+}
+ul,ol {
+	list-style: none;
+}
+a {
+	text-decoration: none;
+	color: #333;
+}
+input,textarea {
+	outline: none;
+	border: none;
+	resize: none;
+	/*清除移动端输入框的样式*/
+	-webkit-appearance: none;
+}
+/*common css  公用样式*/
+.f_left {
+	float: left;
+}
+.f_right {
+	float: right;
+}
+.clearfix::before,
+.clearfix::after {
+	content: "";
+  display: block;
+	height: 0;
+	line-height: 0;
+	visibility: hidden;
+	clear: both;
+
+}
+.m_l10 {
+	margin-left: 10px;
+}
+.m_r10 {
+	margin-right: 10px;
+}
+
+.text-center{
+	text-align: center;
+}
+
+table,table tr th, table tr td { border:1px solid #ddd; }
+table { width: 200px; min-height: 25px; line-height: 25px; text-align: center; border-collapse: collapse;}
+[title="站长统计"]{
+	display: none;
+}
